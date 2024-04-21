@@ -12,18 +12,9 @@ final class HomeViewModelTests: XCTestCase {
     
     var viewModel: HomeViewModel!
     
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        viewModel = HomeViewModel(coinDataUseCase: MockCoinDataUseCase())
-    }
-    
-    override func tearDownWithError() throws {
-        viewModel = nil
-        try super.tearDownWithError()
-    }
-    
-    func testFetchCoinData_Success() async throws {
+    func testFetchCoinDataSuccess() async throws {
         // Given
+        viewModel = HomeViewModel(coinDataUseCase: MockCoinDataUseCase())
         let expectedCoins = [ConstantData.coinModel]
         
         // When
@@ -34,13 +25,32 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.getCoinCount(), expectedCoins.count, "Coin count should match")
     }
     
+    func testFetchCoinDataFail() async throws {
+        // Given
+        let mockUseCase = MockCoinDataUseCase()
+        mockUseCase.shouldThrowError = true
+        viewModel = HomeViewModel(coinDataUseCase: mockUseCase)
+        
+        let expectedCoinsCount = 0
+        
+        // When
+        let result = await viewModel.fetchCoinData()
+        
+        // Then
+        XCTAssertFalse(result, "Fetch coin data should fail")
+        XCTAssertEqual(viewModel.getCoinCount(), expectedCoinsCount, "Coin count should match")
+    }
     
 }
 
     // MockCoinDataUseCase for testing
 class MockCoinDataUseCase: CoinDataUseCase {
+    var shouldThrowError = false
     override func fetchCoinData() async throws -> [CoinModel] {
         // Simulate successful data fetching
+        if shouldThrowError {
+            throw APIError.networkError(nil)
+        }
         return [
             ConstantData.coinModel
         ]
