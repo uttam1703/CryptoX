@@ -19,44 +19,41 @@ final class CoinDetailViewModelTests: XCTestCase {
     
     func testFetchCoinDetailSuccess() async {
         // Given
-        let viewModel = CoinDetailViewModel(coinModel: mockCoinModel, coinDetailUC: MockCoinDetailDataUseCase())
+        let viewModel: CoinDetailViewModelProtocol = CoinDetailViewModel(coinModel: mockCoinModel, coinDetailUC: MockCoinDetailDataUseCase())
         
         // When
-        let responce = await viewModel.fetchCoinDetail()
+        let response = await viewModel.fetchCoinDetail()
         // Then
-        XCTAssertTrue(responce)
+        XCTAssertTrue(response)
         XCTAssertNotNil(viewModel.getCoinDetailResponse())
-        XCTAssertEqual(viewModel.getStatisticModelCount(), 10) // Assuming all statistics are added
+        XCTAssertEqual(viewModel.getStatisticModelCount(), 10)
     }
     
     func testFetchCoinDetailFailure() async {
         // Given
         let mockUseCase = MockCoinDetailDataUseCase()
-        mockUseCase.shouldThrowError = true
         let viewModel = CoinDetailViewModel(coinModel: mockCoinModel, coinDetailUC: mockUseCase)
     
         
         // When
-        let responce = await viewModel.fetchCoinDetail()
+        let response = await viewModel.fetchCoinDetail()
         
         // Then
-        XCTAssertFalse(responce)
+        XCTAssertFalse(response)
         XCTAssertNil(viewModel.getCoinDetailResponse())
-        XCTAssertEqual(viewModel.getStatisticModelCount(), 0) // Assuming no statistics are added due to failure
-    }
+        XCTAssertEqual(viewModel.getStatisticModelCount(), 0)    }
         
        
 }
 
-// Mock CoinDetailDataUseCase for testing
-class MockCoinDetailDataUseCase: CoinDetailDataUseCase {
+//// Mock CoinDetailDataUseCase for testing
+class MockCoinDetailDataUseCase: CoinDetailDataUseCaseProtocol {
     var shouldThrowError = false
-    let mockCoinDetailModel: CoinDetailModel = ConstantData.coinDetailModel
-    override func fetchCoinDetailData(forCoinId coinId: String) async throws -> CoinDetailModel? {
+    func fetchCoinDetailData(forCoinId coinId: String) async throws -> CoinDetailModel? {
         if shouldThrowError {
             throw APIError.networkError(nil)
         }
-        return mockCoinDetailModel
+        return ConstantData.coinDetailModel
     }
 }
 

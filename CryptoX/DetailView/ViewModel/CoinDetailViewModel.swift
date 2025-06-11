@@ -7,16 +7,26 @@
 
 import Foundation
 
+protocol CoinDetailViewModelProtocol {
+    func fetchCoinDetail() async -> Bool
+    func getCoinDetailResponse() -> CoinDetailDescriptionModel?
+    func getStatisticModelCount() -> Int
+    func getStatisticModel(forRow row: Int) -> StatisticModel
+    func getCoinModel() -> CoinModel
+    func getCoinImage() -> String
+}
 
-final class CoinDetailViewModel {
+
+
+final class CoinDetailViewModel: CoinDetailViewModelProtocol {
     
     private var coinModel: CoinModel
-    private let coinDetailUC: CoinDetailDataUseCase
+    private let coinDetailUC: CoinDetailDataUseCaseProtocol
     private var coinDetailModel: CoinDetailModel? = nil
     private var statisticModels = [StatisticModel]()
     
     init(coinModel: CoinModel,
-         coinDetailUC: CoinDetailDataUseCase = CoinDetailDataUseCase()) {
+         coinDetailUC: CoinDetailDataUseCaseProtocol = CoinDetailDataUseCase()) {
         self.coinModel = coinModel
         self.coinDetailUC = coinDetailUC
 //        createCoinDetailStatistics()

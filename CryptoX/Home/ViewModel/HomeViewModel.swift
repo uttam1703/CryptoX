@@ -7,8 +7,16 @@
 
 import Foundation
 
-final class HomeViewModel {
-    private let coinDataUseCase: CoinDataUseCase
+protocol HomeViewModelProtocol {
+    func fetchCoinData() async throws -> Bool
+    func getCoinCount() -> Int
+    func getHomeCellConfig(forRow row: Int) -> HomeCellConfigModel
+    func getCoin(forRow row: Int) -> CoinModel
+    func updateSearchText(text: String)
+}
+
+final class HomeViewModel: HomeViewModelProtocol {
+    private let coinDataUseCase: CoinDataUseCaseProtocol
     private var allCoins = [CoinModel]()
     private var filterCoinData = [CoinModel]()
     private var searchText = ""
@@ -19,7 +27,7 @@ final class HomeViewModel {
     }
     
 
-    init(coinDataUseCase: CoinDataUseCase = CoinDataUseCase()) {
+    init(coinDataUseCase: CoinDataUseCaseProtocol = CoinDataUseCase()) {
         self.coinDataUseCase = coinDataUseCase
     }
 

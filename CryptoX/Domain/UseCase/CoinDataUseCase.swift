@@ -13,7 +13,12 @@ enum APIError: Error {
     case networkError(Error?)
 }
 
-class CoinDataUseCase {
+protocol CoinDataUseCaseProtocol {
+    func fetchCoinData() async throws -> [CoinModel]
+}
+
+
+class CoinDataUseCase: CoinDataUseCaseProtocol {
     
     func fetchCoinData() async throws -> [CoinModel] {
         guard let url = URL(string: URLConstant.allCoinURL) else {

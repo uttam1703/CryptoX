@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class MarketDataUseCase {
+protocol MarketDataUseCaseProtocol {
+    func fetchMarketData() async throws -> MarketDataModel?
+}
+
+final class MarketDataUseCase: MarketDataUseCaseProtocol {
     func fetchMarketData() async throws -> MarketDataModel? {
         guard let url = URL(string: URLConstant.marketDataURL) else {
             throw APIError.invalidURL

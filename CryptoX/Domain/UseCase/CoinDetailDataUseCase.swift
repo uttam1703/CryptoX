@@ -7,7 +7,11 @@
 
 import Foundation
 
-class CoinDetailDataUseCase {
+protocol CoinDetailDataUseCaseProtocol {
+    func fetchCoinDetailData(forCoinId coinId: String) async throws -> CoinDetailModel?
+}
+
+class CoinDetailDataUseCase: CoinDetailDataUseCaseProtocol {
     func fetchCoinDetailData(forCoinId coinId: String) async throws -> CoinDetailModel? {
         guard let url = URL(string: URLConstant.coinDetailULR(with: coinId)) else {
             throw APIError.invalidURL
