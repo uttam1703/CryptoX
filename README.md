@@ -21,7 +21,7 @@ A **cryptocurrency showcase demo app** built in **Swift** and **UIKit** followin
 * **UI Framework:** UIKit
 * **Architecture:** MVVM
 * **Networking:** URLSession (async/await)
-* **Charts:** Recharts (or your charting library of choice)
+* **Charts:** Using layer-based approach 
 
 ---
 
