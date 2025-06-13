@@ -1,6 +1,7 @@
 # CryptoX
 
 A **cryptocurrency showcase demo app** built in **Swift** and **UIKit** following the **MVVM** architecture. Browse live coin prices, view detailed charts, and simulate a basic purchase flow.
+🎥 [Watch Demo Video on YouTube](https://youtube.com/shorts/NzgmaA5CTi8)
 
 ---
 
